@@ -32,4 +32,3 @@ class AbstractCharacter:
 
     def get_type(self):
         raise NotImplementedError
-        
