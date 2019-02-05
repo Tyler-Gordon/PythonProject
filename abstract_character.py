@@ -32,6 +32,3 @@ class AbstractCharacter:
 
     def get_type(self):
         raise NotImplementedError
-
-    def test_git(self):
-        pass
