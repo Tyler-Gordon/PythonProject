@@ -15,7 +15,7 @@ class AbstractCharacter:
 
     def get_health(self):
         return self._health
-    
+
     def get_damage(self):
         damage = randint(int(self._attack * 0.5), self._attack)
         return damage
