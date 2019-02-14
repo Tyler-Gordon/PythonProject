@@ -24,7 +24,8 @@ class Arena:
     def update(self,character):
         pass
 
-    def delete(self,character):
+    def delete(self,username):
+        character = self.get_character(username)
         self._characters.remove(character)
 
     def start_tournament(self):
