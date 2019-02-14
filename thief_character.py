@@ -2,12 +2,19 @@ from random import randint
 from abstract_character import AbstractCharacter
 
 class ThiefCharacter(AbstractCharacter):
-    """[summary]
+    """ Child Class from AbstractCharacter
     
     Arguments:
-        AbstractCharacter {[type]} -- [description]
+        AbstractCharacter {Class} -- Parent Class
     """
+
     def __init__(self, username):
+        """ Initializer for ThiefCharacter class
+        
+        Arguments:
+            username {string} -- Character's input username
+        """
+
         self._username = username
         self._health = 100
         self._attack = 10
@@ -16,18 +23,45 @@ class ThiefCharacter(AbstractCharacter):
         self._dodge_chance = (18,19,20)
 
     def get_type(self):
+        """ Returns Character type
+        
+        Returns:
+            string -- Character's type
+        """
+
         return 'Thief'
 
     def get_stats(self):
-        print("Username: {}".format(self._username))
-        print("Health: {}".format(self._health))
-        print("Attack: {}".format(self._attack))
-        print("Defence: {}".format(self._defence))
-        print("Attack Speed: {}".format(self._attack_speed))
-        print('Dodge Chance: 15%')
+        """ Returns stats for Thief
+        
+        Returns:
+            string -- Thief Character's stats
+        """
 
-    def take_damage(self, damage):
-        if randint(1, 20) in self._dodge_chance:
+        username = "Username: {}\n".format(self._username)
+        health = "Health: {}\n".format(self._health)
+        attack = "Attack: {}\n".format(self._attack)
+        defence = "Defence: {}\n".format(self._defence)
+        att_speed = "Attack Speed: {}\n".format(self._attack_speed)
+        dodge_chance = 'Dodge Chance: 15%'
+        stats_string = username + health + attack + defence + att_speed + dodge_chance
+        return stats_string
+
+    def take_damage(self, damage, die_roll=0):
+        """ Returns if 18,19,20 is rolled and Thief dodges the attack.
+            Otherwise calls parent version of method.         
+        Keyword Arguments:
+            die_roll {int} -- die_roll implemented for testing purposes
+            such that dodge can be guaranteed. Default is set for usage in
+            Arena class and actual combat.(default: {0})
+        
+        Returns:
+            int -- Damage dealt in combat
+        """
+        
+        if not die_roll:
+            die_roll = self.get_die_roll()
+        if die_roll in self._dodge_chance:
             return
         else:
             super().take_damage(damage)
