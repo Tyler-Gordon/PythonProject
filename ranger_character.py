@@ -2,12 +2,19 @@ from random import randint
 from abstract_character import AbstractCharacter
 
 class RangerCharacter(AbstractCharacter):
-    """[summary]
+    """ Child Class from AbstractCharacter
     
     Arguments:
-        AbstractCharacter {[type]} -- [description]
+        AbstractCharacter {Class} -- Parent Class
     """
+
     def __init__(self, username):
+        """ Initializer for RangerCharacter class
+        
+        Arguments:
+            username {string} -- Character's input username
+        """
+
         self._username = username
         self._health = 100
         self._attack = 10
@@ -18,9 +25,21 @@ class RangerCharacter(AbstractCharacter):
         self._bow_crit_modifier = 0.5
 
     def get_type(self):
+        """ Returns Character type
+        
+        Returns:
+            string -- Character's type
+        """
+
         return 'Ranger'
 
     def get_stats(self):
+        """ Returns stats for Ranger
+        
+        Returns:
+            string -- Ranger Character's stats
+        """
+
         username = "Username: {}\n".format(self._username)
         health = "Health: {}\n".format(self._health)
         attack = "Attack: {}\n".format(self._attack)
@@ -33,6 +52,17 @@ class RangerCharacter(AbstractCharacter):
         return stats_string
         
     def get_damage(self, die_roll=0):
+        """ Returns crit damage if 18,19,20 is rolled. Otherwise
+            calls parent version of method.         
+        Keyword Arguments:
+            die_roll {int} -- die_roll implemented for testing purposes
+            such that crits can be guaranteed. Default is set for usage in
+            Arena class and actual combat.(default: {0})
+        
+        Returns:
+            int -- Damage dealt in combat
+        """
+        
         if not die_roll:
             die_roll = self.get_die_roll()
         if die_roll in self._bow_crit_chance:
@@ -41,6 +71,17 @@ class RangerCharacter(AbstractCharacter):
             return super().get_damage()
 
     def take_damage(self, damage, die_roll=0):
+        """ Returns if 20 is rolled and Ranger dodges the attack.
+            Otherwise calls parent version of method.         
+        Keyword Arguments:
+            die_roll {int} -- die_roll implemented for testing purposes
+            such that dodges can be guaranteed. Default is set for usage in
+            Arena class and actual combat.(default: {0})
+        
+        Returns:
+            int -- Damage dealt in combat
+        """
+        
         if not die_roll:
             die_roll = self.get_die_roll()
         if die_roll == self._dodge_chance:

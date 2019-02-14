@@ -2,9 +2,19 @@ from random import randint
 from abstract_character import AbstractCharacter
 
 class MageCharacter(AbstractCharacter):
-    """[summary]
+    """ Child Class from AbstractCharacter
+    
+    Arguments:
+        AbstractCharacter {Class} -- Parent Class
     """
+
     def __init__(self, username):
+        """ Initializer for MageCharacter class
+        
+        Arguments:
+            username {string} -- Character's input username
+        """
+
         self._username = username
         self._health = 100
         self._attack = 10
@@ -14,9 +24,21 @@ class MageCharacter(AbstractCharacter):
         self._spell_chance = (19,20)
 
     def get_type(self):
+        """ Returns Character type
+        
+        Returns:
+            string -- Character's type
+        """
+
         return "Mage"
     
     def get_stats(self):
+        """ Returns stats for Mage
+        
+        Returns:
+            string -- Mage Character's stats
+        """
+
         username = "Username: {}\n".format(self._username)
         health = "Health: {}\n".format(self._health)
         attack = "Attack: {}\n".format(self._attack)
@@ -28,6 +50,17 @@ class MageCharacter(AbstractCharacter):
         return stats_string
 
     def get_damage(self, die_roll=0):
+        """ Returns spell damage if 19,20 is rolled. Otherwise
+            calls parent version of method.         
+        Keyword Arguments:
+            die_roll {int} -- die_roll implemented for testing purposes
+            such that spells can be guaranteed. Default is set for usage in
+            Arena class and actual combat.(default: {0})
+        
+        Returns:
+            int -- Damage dealt in combat
+        """
+        
         if not die_roll:
             die_roll = self.get_die_roll()
         if die_roll in self._spell_chance:

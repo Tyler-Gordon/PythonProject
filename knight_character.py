@@ -2,12 +2,18 @@ from random import randint
 from abstract_character import AbstractCharacter
 
 class KnightCharacter(AbstractCharacter):
-    """[summary]
+    """ Child Class from AbstractCharacter
     
     Arguments:
-        AbstractCharacter {[type]} -- [description]
+        AbstractCharacter {Class} -- Parent Class
     """
     def __init__(self, username):
+        """ Initializer for KnightCharacter class
+        
+        Arguments:
+            username {string} -- Character's input username
+        """
+
         self._username = username
         self._health = 100
         self._attack = 10
@@ -18,9 +24,21 @@ class KnightCharacter(AbstractCharacter):
         self._shield_defence_modifier = 0.3
 
     def get_type(self):
+        """ Returns Character type
+        
+        Returns:
+            string -- Character's type
+        """
+
         return 'Knight'
 
     def get_stats(self):
+        """ Returns stats for Knight
+        
+        Returns:
+            string -- Knight Character's stats
+        """
+
         username = "Username: {}\n".format(self._username)
         health = "Health: {}\n".format(self._health)
         attack = "Attack: {}\n".format(self._attack)
@@ -33,6 +51,17 @@ class KnightCharacter(AbstractCharacter):
         return stats_string
 
     def get_damage(self, die_roll=0):
+        """ Returns crit damage if 19,20 is rolled. Otherwise
+            calls parent version of method.         
+        Keyword Arguments:
+            die_roll {int} -- die_roll implemented for testing purposes
+            such that crits can be guaranteed. Default is set for usage in
+            Arena class and actual combat.(default: {0})
+        
+        Returns:
+            int -- Damage dealt in combat
+        """
+
         if not die_roll:
             die_roll = self.get_die_roll()
         if die_roll in self._sword_crit_chance:
@@ -41,5 +70,11 @@ class KnightCharacter(AbstractCharacter):
             return super().get_damage()
 
     def take_damage(self, damage):
+        """ Applies damage to Knight after being reduced by its shield modifier
+        
+        Arguments:
+            damage {int} -- Damage dealt to Knight
+        """
+
         damage = damage - int(self._defence * self._shield_defence_modifier)
         self._health -= damage
