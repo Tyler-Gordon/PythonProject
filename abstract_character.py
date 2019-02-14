@@ -26,6 +26,9 @@ class AbstractCharacter:
     
     def get_attack_speed(self):
         return self._attack_speed
+    
+    def get_die_roll(self):
+        return randint(1,20)
 
     def get_stats(self):
         raise NotImplementedError

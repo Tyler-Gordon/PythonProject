@@ -17,16 +17,20 @@ class MageCharacter(AbstractCharacter):
         return "Mage"
     
     def get_stats(self):
-        print("Username: {}".format(self._username))
-        print("Health: {}".format(self._health))
-        print("Attack: {}".format(self._attack))
-        print("Defence: {}".format(self._defence))
-        print("Attack Speed: {}".format(self._attack_speed))
-        print('Spell Chance: 10%')
-        print('Spell Damage: {}'.format((self._attack + self._spell_power)))
+        username = "Username: {}\n".format(self._username)
+        health = "Health: {}\n".format(self._health)
+        attack = "Attack: {}\n".format(self._attack)
+        defence = "Defence: {}\n".format(self._defence)
+        att_speed = "Attack Speed: {}\n".format(self._attack_speed)
+        spell_chance = 'Spell Chance: 10%'
+        spell_damage = 'Spell Damage: {}'.format(self.get_damage(20))
+        stats_string = username + health + attack + defence + att_speed + spell_chance + spell_damage
+        return stats_string
 
-    def get_damage(self):
-        if randint(1,20) in self._spell_chance:
+    def get_damage(self, die_roll=0):
+        if not die_roll:
+            die_roll = self.get_die_roll()
+        if die_roll in self._spell_chance:
             return self._attack + self._spell_power
         else:
             return super().get_damage()

@@ -21,17 +21,21 @@ class KnightCharacter(AbstractCharacter):
         return 'Knight'
 
     def get_stats(self):
-        print("Username: {}".format(self._username))
-        print("Health: {}".format(self._health))
-        print("Attack: {}".format(self._attack))
-        print("Defence: {}".format(self._defence))
-        print("Attack Speed: {}".format(self._attack_speed))
-        print('Sword Crit Chance: 10%')
-        print('Sword Crit Damage: {}'.format((self._attack + int(self._attack * self._sword_crit_modifier))))
-        print('Shield Defence Modifier: 30%')
+        username = "Username: {}\n".format(self._username)
+        health = "Health: {}\n".format(self._health)
+        attack = "Attack: {}\n".format(self._attack)
+        defence = "Defence: {}\n".format(self._defence)
+        att_speed = "Attack Speed: {}\n".format(self._attack_speed)
+        sword_crit = 'Sword Crit Chance: 10%\n'
+        crit_damage = 'Sword Crit Damage: {}\n'.format(self.get_damage(20))
+        def_modifier = 'Shield Defence Modifier: 30%\n'
+        stats_string = username + health + attack + defence + att_speed + sword_crit + crit_damage + def_modifier
+        return stats_string
 
-    def get_damage(self):
-        if randint(1, 20) in self._sword_crit_chance:
+    def get_damage(self, die_roll=0):
+        if not die_roll:
+            die_roll = self.get_die_roll()
+        if die_roll in self._sword_crit_chance:
             return self._attack + int(self._attack * self._sword_crit_modifier)
         else:
             return super().get_damage()

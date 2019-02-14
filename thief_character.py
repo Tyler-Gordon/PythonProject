@@ -19,15 +19,19 @@ class ThiefCharacter(AbstractCharacter):
         return 'Thief'
 
     def get_stats(self):
-        print("Username: {}".format(self._username))
-        print("Health: {}".format(self._health))
-        print("Attack: {}".format(self._attack))
-        print("Defence: {}".format(self._defence))
-        print("Attack Speed: {}".format(self._attack_speed))
-        print('Dodge Chance: 15%')
+        username = "Username: {}\n".format(self._username)
+        health = "Health: {}\n".format(self._health)
+        attack = "Attack: {}\n".format(self._attack)
+        defence = "Defence: {}\n".format(self._defence)
+        att_speed = "Attack Speed: {}\n".format(self._attack_speed)
+        dodge_chance = 'Dodge Chance: 15%'
+        stats_string = username + health + attack + defence + att_speed + dodge_chance
+        return stats_string
 
-    def take_damage(self, damage):
-        if randint(1, 20) in self._dodge_chance:
+    def take_damage(self, damage, die_roll=0):
+        if not die_roll:
+            die_roll = self.get_die_roll()
+        if die_roll in self._dodge_chance:
             return
         else:
             super().take_damage(damage)

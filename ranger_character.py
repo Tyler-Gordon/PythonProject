@@ -1,7 +1,7 @@
 from random import randint
 from abstract_character import AbstractCharacter
 
-class ThiefCharacter(AbstractCharacter):
+class RangerCharacter(AbstractCharacter):
     """[summary]
     
     Arguments:
@@ -21,23 +21,29 @@ class ThiefCharacter(AbstractCharacter):
         return 'Ranger'
 
     def get_stats(self):
-        print("Username: {}".format(self._username))
-        print("Health: {}".format(self._health))
-        print("Attack: {}".format(self._attack))
-        print("Defence: {}".format(self._defence))
-        print("Attack Speed: {}".format(self._attack_speed))
-        print('Dodge Chance: 5%')
-        print('Bow Crit Chance: 20%')
-        print('Bow Crit Damage: {}'.format((self._attack + int(self._attack * self._bow_crit_modifier))))
-
-    def get_damage(self):
-        if randint(1, 20) in self._bow_crit_chance:
+        username = "Username: {}\n".format(self._username)
+        health = "Health: {}\n".format(self._health)
+        attack = "Attack: {}\n".format(self._attack)
+        defence = "Defence: {}\n".format(self._defence)
+        att_speed = "Attack Speed: {}\n".format(self._attack_speed)
+        dodge_chance = 'Dodge Chance: 5%'
+        bow_chance = 'Bow Crit Chance: 20%'
+        bow_damage = 'Bow Crit Damage: {}'.format(self.get_damage(20))
+        stats_string = username + health + attack + defence + att_speed + dodge_chance + bow_chance + bow_damage
+        return stats_string
+        
+    def get_damage(self, die_roll=0):
+        if not die_roll:
+            die_roll = self.get_die_roll()
+        if die_roll in self._bow_crit_chance:
             return self._attack + int(self._attack * self._bow_crit_modifier)
         else:
             return super().get_damage()
 
-    def take_damage(self, damage):
-        if randint(1, 20) == self._dodge_chance:
+    def take_damage(self, damage, die_roll=0):
+        if not die_roll:
+            die_roll = self.get_die_roll()
+        if die_roll == self._dodge_chance:
             return
         else:
             super().take_damage(damage)
