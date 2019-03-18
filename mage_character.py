@@ -64,6 +64,9 @@ class MageCharacter(AbstractCharacter):
         if not die_roll:
             die_roll = self.get_die_roll()
         if die_roll in self._spell_chance:
-            return self._attack + self._spell_power
+            return self.spell()
         else:
             return super().get_damage()
+
+    def spell(self):
+        return self._attack + self._spell_power

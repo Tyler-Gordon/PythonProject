@@ -24,7 +24,6 @@ class TestArena(TestCase):
 
     def test_get_character(self):
         self.test_arena.add_character(self.test_mage)
-
         self.assertEqual(self.test_mage,self.test_arena.get_character('Garry'),'Must return Garry')
 
     def test_get_all(self):
