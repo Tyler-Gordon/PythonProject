@@ -66,14 +66,14 @@ class RangerCharacter(AbstractCharacter):
         if not die_roll:
             die_roll = self.get_die_roll()
         if die_roll in self._bow_crit_chance:
-            return self._attack + int(self._attack * self._bow_crit_modifier)
+            return self.shoot_bow()
         else:
             return super().get_damage()
 
     def take_damage(self, damage, die_roll=0):
         """ Returns if 20 is rolled and Ranger dodges the attack.
             Otherwise calls parent version of method.         
-        Keyword Arguments:
+        Keyword Arguments:  
             die_roll {int} -- die_roll implemented for testing purposes
             such that dodges can be guaranteed. Default is set for usage in
             Arena class and actual combat.(default: {0})
@@ -88,3 +88,6 @@ class RangerCharacter(AbstractCharacter):
             return
         else:
             super().take_damage(damage)
+    
+    def shoot_bow(self):
+        return self._attack + int(self._attack * self._bow_crit_modifier)

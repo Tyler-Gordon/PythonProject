@@ -3,27 +3,34 @@ from random import randint
 class AbstractCharacter:
     """ AbstractCharacter class that models an Arena fighter
     """
-    def __init__(self, username):
+    def __init__(self):
         """ Initializes class with username
         
         Arguments:
             username {int} -- Username for Character
         """
 
-        self._username = username
+        self._id = None
         self._health = 0
         self._attack = 0
         self._defence = 0
         self._attack_speed = 0
     
-    def get_username(self):
+    def get_id(self):
         """ Returns Character's username
         
         Returns:
             string -- Character's initialized username
         """
+        return self._id
 
-        return self._username
+    def set_id(self, username):
+        """
+        
+        Arguments:
+            username {[string]} -- the new username
+        """
+        self._id = username
 
     def get_health(self):
         """ Returns instance's current health
