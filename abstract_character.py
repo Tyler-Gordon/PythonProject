@@ -98,5 +98,7 @@ class AbstractCharacter:
         Raises:
             NotImplementedError -- Raises error if not implemented by child class
         """
-
+        raise NotImplementedError
+        
+    def to_dict(self):
         raise NotImplementedError

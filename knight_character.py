@@ -74,3 +74,17 @@ class KnightCharacter(AbstractCharacter):
 
     def sword_swing(self):
         return self._attack + int(self._attack * self._sword_crit_modifier)
+
+    def to_dict(self):
+        data = {
+            'id': self._id,
+            'health': self._health,
+            'attack': self._attack,
+            'defence': self._defence,
+            'att_speed': self._attack_speed,
+            'sword_crit':  self._sword_crit_chance,
+            'crit_damage':  self._sword_crit_modifier,
+            'def_modifier': self._shield_defence_modifier,
+            'type': 'Knight'
+        }
+        return data

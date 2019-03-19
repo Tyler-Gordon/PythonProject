@@ -84,3 +84,17 @@ class RangerCharacter(AbstractCharacter):
     
     def shoot_bow(self):
         return self._attack + int(self._attack * self._bow_crit_modifier)
+
+    def to_dict(self):
+        data = {
+            'id': self._id,
+            'health': self._health,
+            'attack': self._attack,
+            'defence': self._defence,
+            'att_speed': self._attack_speed,
+            'dodge_change':  self._dodge_chance,
+            'bow_crit_change':  self._bow_crit_chance,
+            'bow_crit_modifier':self._bow_crit_modifier,
+            'type':'Ranger'
+        }
+        return data

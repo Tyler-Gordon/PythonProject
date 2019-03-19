@@ -58,3 +58,15 @@ class ThiefCharacter(AbstractCharacter):
             return
         else:
             super().take_damage(damage)
+    
+    def to_dict(self):
+        data = {
+            'id': self._id,
+            'health': self._health,
+            'attack': self._attack,
+            'defence': self._defence,
+            'att_speed': self._attack_speed,
+            'dodge_change':  self._dodge_chance,
+            'type':'Thief'
+        }
+        return data

@@ -1,12 +1,17 @@
 from abstract_character import AbstractCharacter
+from knight_character import KnightCharacter
+from mage_character import MageCharacter
+from ranger_character import RangerCharacter
+from thief_character import ThiefCharacter
+
 from random import random
 class Arena:
     """Manager Class for all character classes"""
     
-    def __init__(self):
+    def __init__(self,filepath):
         """Initializes the Arena class"""
         self._characters = []
-
+        self._filepath = filepath
     def add_character(self,new_character):
         """Adds a character object to the list of characters
         
@@ -22,6 +27,9 @@ class Arena:
             self._characters.append(new_character)
         else:
             print('Character ID already in use.')
+        ##############################################
+        #       must somehow return an int????       #
+        ############################################## 
 
     def get_character(self,id):
         """Returns a character based on the id supplied
@@ -88,6 +96,30 @@ class Arena:
             if character.get_id() == id:
                 self._characters.remove(character)
 
+    def _read_employees_from_file():
+        with open(self._filepath) as file:
+            data = json.load(f)
+            
+        for user in data:
+            if user.type == 'Knight':
+                character = KnightCharacter()
+            elif user.type == 'Mage':
+                character = MageCharacter()
+            elif user.type == 'Ranger':
+                character = RangerCharacter()
+            elif user.type == 'Thief':
+                character = ThiefCharacter()
+        
+            self._characters.append(character)
+
+    def _write_employees_to_file():
+        data = []
+        for character in self._characters:
+            data.append(character.to_dict())
+
+        with open(self._filepath, 'w') as file:  
+            json.dump(data, file)
+    
     @staticmethod
     def _validate_string_input(id):
         """ Private helper to validate string values """

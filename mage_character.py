@@ -63,3 +63,16 @@ class MageCharacter(AbstractCharacter):
 
     def spell(self):
         return self._attack + self._spell_power
+
+    def to_dict(self):
+        data = {
+            'id': self._id,
+            'health': self._health,
+            'attack': self._attack,
+            'defence': self._defence,
+            'att_speed': self._attack_speed,
+            'spell_change':  self._spell_chance,
+            'spell_power':  self._spell_power,
+            'type': 'Mage'
+        }
+        return data
