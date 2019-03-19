@@ -3,6 +3,10 @@ from random import randint
 class AbstractCharacter:
     """ AbstractCharacter class that models an Arena fighter
     """
+    HEALTH = 100
+    ATTACK = 10
+    DEFENCE = 10
+    ATTACK_SPEED = 1
     def __init__(self):
         """ Initializes class with username
         
@@ -11,10 +15,10 @@ class AbstractCharacter:
         """
 
         self._id = None
-        self._health = 0
-        self._attack = 0
-        self._defence = 0
-        self._attack_speed = 0
+        self._health = AbstractCharacter.HEALTH
+        self._attack = AbstractCharacter.ATTACK
+        self._defence = AbstractCharacter.DEFENCE
+        self._attack_speed = AbstractCharacter.ATTACK_SPEED
     
     def get_id(self):
         """ Returns Character's username

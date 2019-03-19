@@ -14,26 +14,20 @@ class Arena:
             character {class} -- character object
         """
         charid = random()
-        charid_used = False
 
-        for character in self._characters:
-            if character.get_id() == charid:
-                charid_used = True
-                break
-            else:
-                continue
-        
-        if charid_used == False:
-            new_character.username = charid
+        id = [character.get_id() for character in self._characters]
+
+        if charid not in id:
+            new_character.set_id(charid)
             self._characters.append(new_character)
         else:
             print('Character ID already in use.')
 
     def get_character(self,id):
-        """Returns a character based on the username supplied
+        """Returns a character based on the id supplied
         
         Arguments:
-            username {string} -- The username of the character
+            id {string} -- The id of the character
         
         Returns:
             object -- The character object

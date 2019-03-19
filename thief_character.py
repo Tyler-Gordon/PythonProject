@@ -8,18 +8,11 @@ class ThiefCharacter(AbstractCharacter):
         AbstractCharacter {Class} -- Parent Class
     """
 
-    def __init__(self, username):
+    def __init__(self):
         """ Initializer for ThiefCharacter class
-        
-        Arguments:
-            username {string} -- Character's input username
         """
 
-        self._username = username
-        self._health = 100
-        self._attack = 10
-        self._defence = 10
-        self._attack_speed = 1
+        super(ThiefCharacter, self).__init__()
         self._dodge_chance = (18,19,20)
 
     def get_type(self):
@@ -38,13 +31,13 @@ class ThiefCharacter(AbstractCharacter):
             string -- Thief Character's stats
         """
 
-        username = "Username: {}\n".format(self._username)
+        id = "Id: {}\n".format(self._id)
         health = "Health: {}\n".format(self._health)
         attack = "Attack: {}\n".format(self._attack)
         defence = "Defence: {}\n".format(self._defence)
         att_speed = "Attack Speed: {}\n".format(self._attack_speed)
         dodge_chance = 'Dodge Chance: 15%'
-        stats_string = username + health + attack + defence + att_speed + dodge_chance
+        stats_string = id + health + attack + defence + att_speed + dodge_chance
         return stats_string
 
     def take_damage(self, damage, die_roll=0):

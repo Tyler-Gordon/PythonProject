@@ -7,7 +7,7 @@ class TestRangerCharacter(TestCase):
     def setUp(self):
         """ Creates a test_ranger instance and logs the test.
         """
-        self.test_ranger = RangerCharacter('Garry')
+        self.test_ranger = RangerCharacter()
         self.logPoint()
 
     def logPoint(self):
@@ -30,7 +30,7 @@ class TestRangerCharacter(TestCase):
     def test_get_stats(self):
         """ Test returns the same string.
         """
-        username = "Username: {}\n".format('Garry')
+        id = "Id: {}\n".format('None')
         health = "Health: {}\n".format(100)
         attack = "Attack: {}\n".format(10)
         defence = "Defence: {}\n".format(10)
@@ -38,7 +38,7 @@ class TestRangerCharacter(TestCase):
         dodge_chance = 'Dodge Chance: 5%'
         bow_chance = 'Bow Crit Chance: 20%'
         bow_damage = 'Bow Crit Damage: {}'.format(self.test_ranger.get_damage(20))
-        test_stats_string = username + health + attack + defence + att_speed + dodge_chance + bow_chance + bow_damage
+        test_stats_string = id + health + attack + defence + att_speed + dodge_chance + bow_chance + bow_damage
 
         self.assertEqual(test_stats_string, self.test_ranger.get_stats(),
                          "Strings must be the same.")
@@ -64,13 +64,7 @@ class TestRangerCharacter(TestCase):
         self.assertEqual(self.test_ranger.get_health(), 91, "Health must equal 91.")
 
 
-    #Testing Abstract Methods
-    def test_get_username(self):
-        """ Test username is Garry
-        """
-        self.assertEqual('Garry', self.test_ranger.get_username(),
-                         'Username must be Garry.')
-                         
+    #Testing Abstract Methods                         
     def test_get_health(self):
         """ Test health is equal to 100
         """

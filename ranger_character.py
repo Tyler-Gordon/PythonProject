@@ -8,18 +8,11 @@ class RangerCharacter(AbstractCharacter):
         AbstractCharacter {Class} -- Parent Class
     """
 
-    def __init__(self, username):
+    def __init__(self):
         """ Initializer for RangerCharacter class
-        
-        Arguments:
-            username {string} -- Character's input username
         """
 
-        self._username = username
-        self._health = 100
-        self._attack = 10
-        self._defence = 10
-        self._attack_speed = 1
+        super(RangerCharacter, self).__init__()
         self._dodge_chance = 20
         self._bow_crit_chance = (18,19,20)
         self._bow_crit_modifier = 0.5
@@ -40,7 +33,7 @@ class RangerCharacter(AbstractCharacter):
             string -- Ranger Character's stats
         """
 
-        username = "Username: {}\n".format(self._username)
+        id = "Id: {}\n".format(self._id)
         health = "Health: {}\n".format(self._health)
         attack = "Attack: {}\n".format(self._attack)
         defence = "Defence: {}\n".format(self._defence)
@@ -48,7 +41,7 @@ class RangerCharacter(AbstractCharacter):
         dodge_chance = 'Dodge Chance: 5%'
         bow_chance = 'Bow Crit Chance: 20%'
         bow_damage = 'Bow Crit Damage: {}'.format(self.get_damage(20))
-        stats_string = username + health + attack + defence + att_speed + dodge_chance + bow_chance + bow_damage
+        stats_string = id + health + attack + defence + att_speed + dodge_chance + bow_chance + bow_damage
         return stats_string
         
     def get_damage(self, die_roll=0):

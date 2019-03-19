@@ -7,18 +7,11 @@ class KnightCharacter(AbstractCharacter):
     Arguments:
         AbstractCharacter {Class} -- Parent Class
     """
-    def __init__(self, username):
+    def __init__(self):
         """ Initializer for KnightCharacter class
-        
-        Arguments:
-            username {string} -- Character's input username
         """
 
-        self._username = username
-        self._health = 100
-        self._attack = 10
-        self._defence = 10
-        self._attack_speed = 1
+        super(KnightCharacter, self).__init__()
         self._sword_crit_chance = (19,20)
         self._sword_crit_modifier = 0.5
         self._shield_defence_modifier = 0.3
@@ -39,7 +32,7 @@ class KnightCharacter(AbstractCharacter):
             string -- Knight Character's stats
         """
 
-        username = "Username: {}\n".format(self._username)
+        id = "Id: {}\n".format(self._id)
         health = "Health: {}\n".format(self._health)
         attack = "Attack: {}\n".format(self._attack)
         defence = "Defence: {}\n".format(self._defence)
@@ -47,7 +40,7 @@ class KnightCharacter(AbstractCharacter):
         sword_crit = 'Sword Crit Chance: 10%\n'
         crit_damage = 'Sword Crit Damage: {}\n'.format(self.get_damage(20))
         def_modifier = 'Shield Defence Modifier: 30%\n'
-        stats_string = username + health + attack + defence + att_speed + sword_crit + crit_damage + def_modifier
+        stats_string = id + health + attack + defence + att_speed + sword_crit + crit_damage + def_modifier
         return stats_string
 
     def get_damage(self, die_roll=0):

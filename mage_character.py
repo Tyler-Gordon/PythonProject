@@ -8,18 +8,11 @@ class MageCharacter(AbstractCharacter):
         AbstractCharacter {Class} -- Parent Class
     """
 
-    def __init__(self, username):
+    def __init__(self):
         """ Initializer for MageCharacter class
-        
-        Arguments:
-            username {string} -- Character's input username
         """
 
-        self._username = username
-        self._health = 100
-        self._attack = 10
-        self._defence = 10
-        self._attack_speed = 1
+        super(MageCharacter, self).__init__()
         self._spell_power = 30
         self._spell_chance = (19,20)
 
@@ -39,14 +32,14 @@ class MageCharacter(AbstractCharacter):
             string -- Mage Character's stats
         """
 
-        username = "Username: {}\n".format(self._username)
+        id = "Id: {}\n".format(self._id)
         health = "Health: {}\n".format(self._health)
         attack = "Attack: {}\n".format(self._attack)
         defence = "Defence: {}\n".format(self._defence)
         att_speed = "Attack Speed: {}\n".format(self._attack_speed)
         spell_chance = 'Spell Chance: 10%'
         spell_damage = 'Spell Damage: {}'.format(self.get_damage(20))
-        stats_string = username + health + attack + defence + att_speed + spell_chance + spell_damage
+        stats_string = id + health + attack + defence + att_speed + spell_chance + spell_damage
         return stats_string
 
     def get_damage(self, die_roll=0):

@@ -7,7 +7,7 @@ class TestKnightCharacter(TestCase):
     def setUp(self):
         """ Creates a test_knight instance and logs the test.
         """
-        self.test_knight = KnightCharacter('Garry')
+        self.test_knight = KnightCharacter()
         self.logPoint()
 
     def logPoint(self):
@@ -30,7 +30,7 @@ class TestKnightCharacter(TestCase):
     def test_get_stats(self):
         """ Test returns the same string.
         """
-        username = "Username: {}\n".format('Garry')
+        id = "Id: {}\n".format('None')
         health = "Health: {}\n".format(100)
         attack = "Attack: {}\n".format(10)
         defence = "Defence: {}\n".format(10)
@@ -38,7 +38,7 @@ class TestKnightCharacter(TestCase):
         sword_crit = 'Sword Crit Chance: 10%\n'
         crit_damage = 'Sword Crit Damage: {}\n'.format(self.test_knight.get_damage(20))
         def_modifier = 'Shield Defence Modifier: 30%\n'
-        test_stats_string = username + health + attack + defence + att_speed + sword_crit + crit_damage + def_modifier
+        test_stats_string = id + health + attack + defence + att_speed + sword_crit + crit_damage + def_modifier
 
         self.assertEqual(test_stats_string, self.test_knight.get_stats(),
                          "Strings must be the same.")
@@ -61,12 +61,6 @@ class TestKnightCharacter(TestCase):
 
 
     #Testing Abstract methods
-    def test_get_username(self):
-        """ Test username is Garry
-        """
-        self.assertEqual('Garry', self.test_knight.get_username(),
-                         'Username must be Garry.')
-                         
     def test_get_health(self):
         """ Test health is equal to 100
         """

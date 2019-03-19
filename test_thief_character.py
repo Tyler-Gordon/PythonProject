@@ -7,7 +7,7 @@ class TestThiefCharacter(TestCase):
     def setUp(self):
         """ Creates a test_thief instance and logs the test.
         """
-        self.test_thief = ThiefCharacter('Garry')
+        self.test_thief = ThiefCharacter()
         self.logPoint()
 
     def logPoint(self):
@@ -30,13 +30,13 @@ class TestThiefCharacter(TestCase):
     def test_get_stats(self):
         """ Test returns the same string.
         """
-        username = "Username: {}\n".format('Garry')
+        id = "Id: {}\n".format('None')
         health = "Health: {}\n".format(100)
         attack = "Attack: {}\n".format(10)
         defence = "Defence: {}\n".format(10)
         att_speed = "Attack Speed: {}\n".format(1)
         dodge_chance = 'Dodge Chance: 15%'
-        test_stats_string = username + health + attack + defence + att_speed + dodge_chance
+        test_stats_string = id + health + attack + defence + att_speed + dodge_chance
 
         self.assertEqual(test_stats_string, self.test_thief.get_stats(),
                          "Strings must be the same.")
@@ -58,12 +58,6 @@ class TestThiefCharacter(TestCase):
         """
         self.assertIn(self.test_thief.get_damage(), range(5,11),
                         "Damage must be in range: 5-10")
-
-    def test_get_username(self):
-        """ Test username is Garry
-        """
-        self.assertEqual('Garry', self.test_thief.get_username(),
-                         'Username must be Garry.')
                          
     def test_get_health(self):
         """ Test health is equal to 100
