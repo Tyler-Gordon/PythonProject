@@ -96,7 +96,7 @@ class Arena:
             if character.get_id() == id:
                 self._characters.remove(character)
 
-    def _read_employees_from_file():
+    def _read_users_from_file():
         with open(self._filepath) as file:
             data = json.load(f)
             
@@ -112,7 +112,7 @@ class Arena:
         
             self._characters.append(character)
 
-    def _write_employees_to_file():
+    def _write_users_to_file():
         data = []
         for character in self._characters:
             data.append(character.to_dict())
