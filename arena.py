@@ -3,8 +3,8 @@ from knight_character import KnightCharacter
 from mage_character import MageCharacter
 from ranger_character import RangerCharacter
 from thief_character import ThiefCharacter
-
-from random import random
+import json
+from random import randint
 class Arena:
     """Manager Class for all character classes"""
     
@@ -18,19 +18,17 @@ class Arena:
         Arguments:
             character {class} -- character object
         """
-        charid = random()
+        charid = randint(1,1000)
 
         id = [character.get_id() for character in self._characters]
 
         if charid not in id:
             new_character.set_id(charid)
             self._characters.append(new_character)
+            return charid
         else:
             print('Character ID already in use.')
-        ##############################################
-        #       must somehow return an int????       #
-        ############################################## 
-
+            return None
     def get_character(self,id):
         """Returns a character based on the id supplied
         
@@ -96,9 +94,9 @@ class Arena:
             if character.get_id() == id:
                 self._characters.remove(character)
 
-    def _read_users_from_file():
+    def _read_users_from_file(self):
         with open(self._filepath) as file:
-            data = json.load(f)
+            data = json.load(file)
             
         for user in data:
             if user.type == 'Knight':
@@ -112,14 +110,20 @@ class Arena:
         
             self._characters.append(character)
 
-    def _write_users_to_file():
+    def _write_users_to_file(self):
         data = []
         for character in self._characters:
             data.append(character.to_dict())
 
         with open(self._filepath, 'w') as file:  
             json.dump(data, file)
-    
+
+    def character_exists(self,id):
+        for character_in_list in self._characters:
+            if character_in_list.get_id() == id:
+                return True
+        return False
+        
     @staticmethod
     def _validate_string_input(id):
         """ Private helper to validate string values """
