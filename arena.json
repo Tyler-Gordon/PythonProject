@@ -1,0 +1,1 @@
+[{"id": 764, "username": "ConnorV", "health": 100, "attack": 10, "defence": 10, "attack_speed": 2, "sword_crit": [19, 20], "crit_damage": 0.5, "def_modifier": 0.3, "type": "knight"}, {"id": 4798, "username": "David", "health": 22, "attack": 11, "defence": 108, "attack_speed": 12, "spell_change": [19, 20], "spell_power": 30, "type": "mage"}]

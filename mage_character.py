@@ -8,11 +8,11 @@ class MageCharacter(AbstractCharacter):
         AbstractCharacter {Class} -- Parent Class
     """
 
-    def __init__(self):
+    def __init__(self, username, health, attack, defence, attack_speed):
         """ Initializer for MageCharacter class
         """
 
-        super(MageCharacter, self).__init__()
+        super(MageCharacter, self).__init__(username, health, attack, defence, attack_speed)
         self._spell_power = 30
         self._spell_chance = (19,20)
 
@@ -23,7 +23,7 @@ class MageCharacter(AbstractCharacter):
             string -- Character's type
         """
 
-        return "Mage"
+        return "mage"
     
     def get_stats(self):
         """ Returns stats for Mage
@@ -67,12 +67,13 @@ class MageCharacter(AbstractCharacter):
     def to_dict(self):
         data = {
             'id': self._id,
+            'username': self._username,
             'health': self._health,
             'attack': self._attack,
             'defence': self._defence,
-            'att_speed': self._attack_speed,
+            'attack_speed': self._attack_speed,
             'spell_change':  self._spell_chance,
             'spell_power':  self._spell_power,
-            'type': 'Mage'
+            'type': self.get_type()
         }
         return data

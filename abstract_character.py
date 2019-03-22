@@ -3,11 +3,8 @@ from random import randint
 class AbstractCharacter:
     """ AbstractCharacter class that models an Arena fighter
     """
-    HEALTH = 100
-    ATTACK = 10
-    DEFENCE = 10
-    ATTACK_SPEED = 1
-    def __init__(self):
+
+    def __init__(self, username, health, attack, defence, attack_speed):
         """ Initializes class with username
         
         Arguments:
@@ -15,26 +12,53 @@ class AbstractCharacter:
         """
 
         self._id = None
-        self._health = AbstractCharacter.HEALTH
-        self._attack = AbstractCharacter.ATTACK
-        self._defence = AbstractCharacter.DEFENCE
-        self._attack_speed = AbstractCharacter.ATTACK_SPEED
+
+        AbstractCharacter._validate_parameter(username)
+        self._username = username
+
+        AbstractCharacter._validate_parameter(health, int)
+        self._health = health
+
+        AbstractCharacter._validate_parameter(attack, int)
+        self._attack = attack
+
+        AbstractCharacter._validate_parameter(defence, int)
+        self._defence = defence
+
+        AbstractCharacter._validate_parameter(attack_speed, int)
+        self._attack_speed = attack_speed
     
     def get_id(self):
-        """ Returns Character's username
+        """ Returns Character's id
         
         Returns:
-            string -- Character's initialized username
+            string -- Character's initialized id
         """
         return self._id
 
-    def set_id(self, username):
+    def set_id(self, id):
+        """
+        
+        Arguments:
+            id {[string]} -- the new id
+        """
+        self._id = id
+
+    def set_username(self, username):
         """
         
         Arguments:
             username {[string]} -- the new username
         """
-        self._id = username
+        self._username = username
+
+    def get_username(self):
+        """ Returns Character's username
+        
+        Returns:
+            string -- Character's initialized username
+        """
+        return self._username
 
     def get_health(self):
         """ Returns instance's current health
@@ -51,7 +75,7 @@ class AbstractCharacter:
         Returns:
             int -- Damage Character deals when attacking
         """
-
+        
         damage = randint(int(self._attack * 0.5), self._attack)
         return damage
 
@@ -61,6 +85,7 @@ class AbstractCharacter:
         Arguments:
             damage {int} -- Damage dealt to Character
         """
+        AbstractCharacter._validate_parameter(damage, int)
 
         damage = damage - int(self._defence * 0.1)
         self._health -= damage
@@ -102,3 +127,11 @@ class AbstractCharacter:
         
     def to_dict(self):
         raise NotImplementedError
+
+    @staticmethod
+    def _validate_parameter(arg, optional_type=None):
+        if optional_type:
+            if not isinstance(arg, optional_type):
+                raise ValueError
+        if not arg:
+            raise ValueError

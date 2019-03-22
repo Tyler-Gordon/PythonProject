@@ -7,11 +7,12 @@ class KnightCharacter(AbstractCharacter):
     Arguments:
         AbstractCharacter {Class} -- Parent Class
     """
-    def __init__(self):
+
+    def __init__(self, username, health, attack, defence, attack_speed):
         """ Initializer for KnightCharacter class
         """
 
-        super(KnightCharacter, self).__init__()
+        super(KnightCharacter, self).__init__(username, health, attack, defence, attack_speed)
         self._sword_crit_chance = (19,20)
         self._sword_crit_modifier = 0.5
         self._shield_defence_modifier = 0.3
@@ -23,7 +24,7 @@ class KnightCharacter(AbstractCharacter):
             string -- Character's type
         """
 
-        return 'Knight'
+        return 'knight'
 
     def get_stats(self):
         """ Returns stats for Knight
@@ -78,13 +79,14 @@ class KnightCharacter(AbstractCharacter):
     def to_dict(self):
         data = {
             'id': self._id,
+            'username': self._username,
             'health': self._health,
             'attack': self._attack,
             'defence': self._defence,
-            'att_speed': self._attack_speed,
+            'attack_speed': self._attack_speed,
             'sword_crit':  self._sword_crit_chance,
             'crit_damage':  self._sword_crit_modifier,
             'def_modifier': self._shield_defence_modifier,
-            'type': 'Knight'
+            'type': self.get_type()
         }
         return data
