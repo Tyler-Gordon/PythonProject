@@ -1,0 +1,8 @@
+{
+    "username": "David", 
+    "health": 22, 
+    "attack": 11, 
+    "defence": 108, 
+    "attack_speed": 12, 
+    "type": "mage"
+}

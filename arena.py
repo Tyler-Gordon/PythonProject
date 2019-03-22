@@ -130,7 +130,7 @@ class Arena:
             raise ValueError("ID cannot be empty.")
 
     @staticmethod
-    def _validate_student(character):
+    def _validate_character(character):
         """ Private helper to validate students """
 
         if character is None:
