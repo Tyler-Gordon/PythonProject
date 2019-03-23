@@ -7,7 +7,7 @@ class TestMageCharacter(TestCase):
     def setUp(self):
         """ Creates a test_mage instance and logs the test.
         """
-        self.test_mage = MageCharacter()
+        self.test_mage = MageCharacter('Tyler',10000,100,100,10)
         self.logPoint()
 
     def logPoint(self):
@@ -25,16 +25,16 @@ class TestMageCharacter(TestCase):
     def test_get_type(self):
         """ Test that get_type returns "Mage"
         """
-        self.assertEqual('Mage', self.test_mage.get_type(), 'Must return "Mage"')
+        self.assertEqual('mage', self.test_mage.get_type(), 'Must return "mage"')
 
     def test_get_stats(self):
         """ Test returns the same string.
         """
         id = "Id: {}\n".format('None')
-        health = "Health: {}\n".format(100)
-        attack = "Attack: {}\n".format(10)
-        defence = "Defence: {}\n".format(10)
-        att_speed = "Attack Speed: {}\n".format(1)
+        health = "Health: {}\n".format(10000)
+        attack = "Attack: {}\n".format(100)
+        defence = "Defence: {}\n".format(100)
+        att_speed = "Attack Speed: {}\n".format(10)
         spell_chance = 'Spell Chance: 10%'
         spell_damage = 'Spell Damage: {}'.format(self.test_mage.get_damage(20))
         test_stats_string = id + health + attack + defence + att_speed + spell_chance + spell_damage
@@ -47,9 +47,9 @@ class TestMageCharacter(TestCase):
         """ Test that spell damage works if 19 or 20 is rolled.
             Test that the normal damage range is returned otherwise.
         """
-        self.assertEqual(40, self.test_mage.get_damage(20),
+        self.assertEqual(130, self.test_mage.get_damage(20),
                         "Spell Damage must equal 40.")
-        self.assertIn(self.test_mage.get_damage(1), range(5,11),
+        self.assertIn(self.test_mage.get_damage(1), range(1,101),
                       "Damage must be in range: 5-10")
 
 
@@ -58,18 +58,18 @@ class TestMageCharacter(TestCase):
         """ Test that damage is properly reduced.
         """
         self.test_mage.take_damage(10)
-        self.assertEqual(self.test_mage.get_health(), 91, "Health must equal 91.")
+        self.assertEqual(self.test_mage.get_health(), 10000, "Health must equal 91.")
                          
     def test_get_health(self):
         """ Test health is equal to 100
         """
-        self.assertEqual(100, self.test_mage.get_health(),
+        self.assertEqual(10000, self.test_mage.get_health(),
                          'Health must be 100.')
     
     def test_get_attack_speed(self):
         """ Test attack_speed is equal to 1
         """
-        self.assertEqual(1, self.test_mage.get_attack_speed(),
+        self.assertEqual(10, self.test_mage.get_attack_speed(),
                          'Attack Speed must be 1.')
     
     def test_get_die_roll(self):
@@ -77,3 +77,6 @@ class TestMageCharacter(TestCase):
         """
         self.assertIn(self.test_mage.get_die_roll(),range(1,21),
                          'Die roll must be in range 1-20.')
+
+    def test_to_dict(self):
+        self.assertEqual(dict, type(self.test_mage.to_dict()),'Type must be of type dictionary')

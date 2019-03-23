@@ -2,6 +2,7 @@ from abstract_character import AbstractCharacter
 from knight_character import KnightCharacter
 from mage_character import MageCharacter
 import json
+from os import remove
 from random import randint
 
 
@@ -15,7 +16,7 @@ class Arena:
         self._read_characters_from_file()
 
     def add_character(self, new_character):
-        """Adds a character object to the list of characters
+        """Adds a character object to the list of characters    
         
         Arguments:
             character {class} -- character object
@@ -98,7 +99,7 @@ class Arena:
                 self._write_characters_to_file()
 
     def _read_characters_from_file(self):
-        with open(self._filepath) as f:
+        with open(self._filepath,'r') as f:
             data = json.load(f)
             
         for character in data:
@@ -119,7 +120,12 @@ class Arena:
 
         with open(self._filepath, 'w') as f:  
             f.write(json.dumps(data))
-        
+
+    def _overwrite_json(self):
+        data = ""
+        with open(self._filepath, 'w') as f:  
+            f.write(json.dumps(data))
+            
     @staticmethod
     def _validate_string_input(char_id):
         """ Private helper to validate string values """
