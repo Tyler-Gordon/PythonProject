@@ -6,25 +6,24 @@ from flask              import Flask, request
 import json
 
 app = Flask(__name__)
-arena = Arena('arena.json')
 
-def create_character_from_json(data, cls):
-    character = cls(data['username'], data['health'], data['attack'],
-                    data['defence'], data['attack_speed'])
-            
-    return character
+CHARACTERS_DB = 'characters.sqlite'
+
+arena = Arena(CHARACTERS_DB)
+
+character_type = {
+    "knight" : KnightCharacter,
+    "mage" : MageCharacter
+}
 
 @app.route('/arena/characters',methods=['POST'])
-def post_new_character():
+def add_character():
 
     content = request.get_json()
 
     try:
-        if content['type'].lower() == 'knight':
-            character = create_character_from_json(content, KnightCharacter)
-
-        elif content['type'].lower() == 'mage':
-            character = create_character_from_json(content, MageCharacter)
+        character_class = character_type[content['type']]
+        character = 
 
         char_id = arena.add_character(character)
         response = app.response_class(

@@ -1,143 +1,112 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from base import Base
+
 from abstract_character import AbstractCharacter
 from knight_character import KnightCharacter
 from mage_character import MageCharacter
-import json
-from os import remove
 from random import randint
 
 
 class Arena:
     """Manager Class for all character classes"""
     
-    def __init__(self,filepath):
+    def __init__(self, db_filename):
         """Initializes the Arena class"""
-        self._characters = []
-        self._filepath = filepath
-        self._read_characters_from_file()
+        if not db_filename:
+            raise ValueError("Invalid Database File")
 
-    def add_character(self, new_character):
-        """Adds a character object to the list of characters    
-        
-        Arguments:
-            character {class} -- character object
-        """
+        engine = create_engine('sqlite:///' + db_filename)
+        Base.metadata.bind = engine
+        self._db_session = sessionmaker(bind=engine)
+
+    def add_character(self, character):
+        """Adds a character """
+
+        char_class = Arena._check_type(character)
+        if not character or not isinstance(character, char_class):
+            raise ValueError("Invalid Character Object")
+
         char_id = randint(1,10000)
 
-        all_char_ids = [character.get_id() for character in self._characters]
+        session = self._db_session()
+        session.add(character)
+        session.commit()
 
-        if char_id not in all_char_ids:
-            new_character.set_id(char_id)
-            self._characters.append(new_character)
-            self._write_characters_to_file()
-            return char_id
+        session.close()
+        return char_id
 
-        else:
-            print('Character ID already in use.')
-            return None
+    def update_character(self, character):
+        """Replaces the character with the same ID """
+        char_class = Arena._check_type(character)
+        if not character or not isinstance(character, char_class):
+            raise ValueError("Invalid Character Object")
+
+        session = self._db_session()
+        existing_character = session.query(char_class).filter(char_class.id == character.id).first()
+        existing_character.copy(character)
+
+        session.commit()
+        session.close()
+    
+    def delete(self,char_id):
+        """Removes a character """
+        session = self._db_session()
+        existing_character = self.get_character(char_id)
+
+        session.delete(existing_character)
+        session.commit()
+        session.close()
+
+    
 
     def get_character(self, char_id):
-        """Returns a character based on the char_id supplied
-        
-        Arguments:
-            char_id {string} -- The char_id of the character
-        
-        Returns:
-            object -- The character object
-        """
+        """Returns a character with the given char_id"""
 
-        for character in self._characters:
-            if character.get_id() == char_id:
-                return character
+        session = self._db_session()
+        existing_character = session.query(KnightCharacter).filter(KnightCharacter.id == char_id).first()
+        
+        if existing_character:
+            if existing_character.get_type() != 'knight':
+                existing_character = session.query(MageCharacter).filter(MageCharacter.id == char_id).first()
+                
+        session.close()
+
+        return existing_character
+
 
     def get_all(self):
-        """Returns all of the objects in the character list
-        
-        Returns:
-            list -- list of all character objects
-        """
+        """Returns all characters"""
 
-        return self._characters
+        session = self._db_session()
+        if session.query(KnightCharacter).all():
+            existing_characters = session.query(KnightCharacter).filter(KnightCharacter.type == 'knight').all()
+            existing_characters.append(session.query(MageCharacter).filter(MageCharacter.type == 'mage').all())
+        else:
+            existing_students = []
+        session.close()
+
+        return existing_students
 
     def get_all_by_type(self, char_type):
-        """Returns all characters based on their player class
-        
-        Arguments:
-            char_type {string} -- The class, or type of the user
-        
-        Returns:
-            list -- list of all objects with given type
-        """
+        """Returns all characters based type"""
+        session = self._db_session()
 
-        char_type_list = [character for character in self._characters if character.get_type() == char_type]
-        return char_type_list
+        if char_type == 'mage':
+            char_type = MageCharacter
+        elif char_type == 'knight':
+            char_type = KnightCharacter
 
-    def update(self, new_character):
-        """Replaces the character with the same ID with an updated character
-        
-        Arguments:
-            new_character {class} -- The new character to be replaced
-        """
-        for character in self._characters:
-            if character.get_id() == new_character.get_id():
-                self._characters.remove(character)
-                self._characters.append(new_character)
-                self._write_characters_to_file()
-                return
+        existing_characters = session.query(char_type).all()
+        session.close()
 
-        return 'Character not in the arena'
-
-    def delete(self,char_id):
-        """Removes a character from the list of characters
-        
-        Arguments:
-            char_id {class} -- ID of Character object to be deleted
-        """
-
-        for character in self._characters:
-            if character.get_id() == char_id:
-                self._characters.remove(character)
-                self._write_characters_to_file()
-
-    def _read_characters_from_file(self):
-        with open(self._filepath,'r') as f:
-            data = json.load(f)
-            
-        for character in data:
-            if character["type"] == 'knight':
-                current_character = KnightCharacter(character["username"], character["health"],
-                                        character["attack"], character["defence"], character["attack_speed"])
-                current_character.set_id(character['id'])
-
-            elif character["type"] == 'mage':
-                current_character = MageCharacter(character["username"], character["health"],
-                                        character["attack"], character["defence"], character["attack_speed"])
-                current_character.set_id(character['id'])
-
-            self._characters.append(current_character)
-
-    def _write_characters_to_file(self):
-        data = [character.to_dict() for character in self._characters]
-
-        with open(self._filepath, 'w') as f:  
-            f.write(json.dumps(data))
-
-    def _overwrite_json(self):
-        data = ""
-        with open(self._filepath, 'w') as f:  
-            f.write(json.dumps(data))
+        return existing_characters
             
     @staticmethod
-    def _validate_string_input(char_id):
-        """ Private helper to validate string values """
-        if char_id is None:
-            raise ValueError("ID cannot be undefined.")
-
-        if char_id == "":
-            raise ValueError("ID cannot be empty.")
-
-    @staticmethod
-    def _validate_character(character):
-        """ Private helper to validate students """
-
-        if character is None:
-            raise ValueError("Character must be defined.")
+    def _check_type(character):
+        if not character:
+            raise ValueError("Invalid Character Object")
+        if character.type == 'mage':
+            return MageCharacter
+        elif character.type == 'knight':
+            return KnightCharacter

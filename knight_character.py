@@ -1,3 +1,4 @@
+from sqlalchemy import Column, Integer, String
 from random import randint
 from abstract_character import AbstractCharacter
 
@@ -8,41 +9,19 @@ class KnightCharacter(AbstractCharacter):
         AbstractCharacter {Class} -- Parent Class
     """
 
-    def __init__(self, username, health, attack, defence, attack_speed):
-        """ Initializer for KnightCharacter class
-        """
+    KNIGHT_CHARACTER_TYPE = "knight"
 
-        super(KnightCharacter, self).__init__(username, health, attack, defence, attack_speed)
-        self._sword_crit_chance = (19,20)
-        self._sword_crit_modifier = 0.5
-        self._shield_defence_modifier = 0.3
+    sword_crit_chance = Column(Integer(100)),
+    sword_crit_modifier = Column(Integer(10)),
+    shield_defence_modifier = Column(Integer(10))
 
-    def get_type(self):
-        """ Returns Character type
-        
-        Returns:
-            string -- Character's type
-        """
-
-        return 'knight'
-
-    def get_stats(self):
-        """ Returns stats for Knight
-        
-        Returns:
-            string -- Knight Character's stats
-        """
-
-        id = "Id: {}\n".format(self._id)
-        health = "Health: {}\n".format(self._health)
-        attack = "Attack: {}\n".format(self._attack)
-        defence = "Defence: {}\n".format(self._defence)
-        att_speed = "Attack Speed: {}\n".format(self._attack_speed)
-        sword_crit = 'Sword Crit Chance: 10%\n'
-        crit_damage = 'Sword Crit Damage: {}\n'.format(self.get_damage(20))
-        def_modifier = 'Shield Defence Modifier: 30%\n'
-        stats_string = id + health + attack + defence + att_speed + sword_crit + crit_damage + def_modifier
-        return stats_string
+    def __init__(self, username, health, attack, defence, attack_speed, type, sword_crit_chance,
+                sword_crit_modifier, shield_defence_modifier):
+        """ Constructor """
+        super(KnightCharacter, self).__init__(username, health, attack, defence, attack_speed, type)
+        self.sword_crit_chance = sword_crit_chance
+        self.sword_crit_modifier = sword_crit_modifier
+        self.shield_defence_modifier = shield_defence_modifier
 
     def get_damage(self, die_roll=0):
         """ Returns crit damage if 19,20 is rolled. Otherwise
@@ -58,7 +37,7 @@ class KnightCharacter(AbstractCharacter):
 
         if not die_roll:
             die_roll = self.get_die_roll()
-        if die_roll in self._sword_crit_chance:
+        if die_roll in self.sword_crit_chance:
             return self.sword_swing()
         else:
             return super().get_damage()
@@ -70,23 +49,21 @@ class KnightCharacter(AbstractCharacter):
             damage {int} -- Damage dealt to Knight
         """
 
-        damage = damage - int(self._defence * self._shield_defence_modifier)
-        self._health -= damage
+        damage = damage - int(self.defence * self.shield_defence_modifier)
+        self.health -= damage
 
     def sword_swing(self):
-        return self._attack + int(self._attack * self._sword_crit_modifier)
+        return self.attack + int(self.attack * self.sword_crit_modifier)
 
     def to_dict(self):
-        data = {
-            'id': self._id,
-            'username': self._username,
-            'health': self._health,
-            'attack': self._attack,
-            'defence': self._defence,
-            'attack_speed': self._attack_speed,
-            'sword_crit':  self._sword_crit_chance,
-            'crit_damage':  self._sword_crit_modifier,
-            'def_modifier': self._shield_defence_modifier,
-            'type': self.get_type()
-        }
-        return data
+        dict = super().to_dict()
+        dict['sword_crit_chance'] = self.sword_crit_chance
+        dict['sword_crit_modifier'] = self.sword_crit_modifier
+        dict['shield_defence_modifier'] = self.shield_defence_modifier
+        return dict
+
+    def copy(self, object):
+        super().copy(object)
+        self.sword_crit_chance = object.sword_crit_chance
+        self.sword_crit_modifier = object.sword_crit_modifier
+        self.shield_defence_modifier = object.shield_defence_modifier

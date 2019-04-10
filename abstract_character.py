@@ -1,73 +1,39 @@
+from sqlalchemy import Column, Integer, String
+from base import Base
 from random import randint
 
 class AbstractCharacter:
-    """ AbstractCharacter class that models an Arena fighter
-    """
+    """ Character Declarative """
+    
+    __tablename__ = 'character'
 
-    def __init__(self, username, health, attack, defence, attack_speed):
-        """ Initializes class with username
-        
-        Arguments:
-            username {int} -- Username for Character
-        """
+    id = Column(Integer, primary_key=True)
+    username = Column(String(250), nullable=False)
+    health = Column(Integer(250), nullable=False)
+    attack = Column(Integer(250), nullable=False)
+    defence = Column(Integer(250), nullable=False)
+    attack_speed = Column(Integer(250), nullable=False)
+    type = Column(String(10), nullable=False)
 
-        self._id = None
+    def __init__(self, username, health, attack, defence, attack_speed, type):
+        """ Constructor """
 
         AbstractCharacter._validate_parameter(username)
-        self._username = username
+        self.username = username
 
         AbstractCharacter._validate_parameter(health, int)
-        self._health = health
+        self.health = health
 
         AbstractCharacter._validate_parameter(attack, int)
-        self._attack = attack
+        self.attack = attack
 
         AbstractCharacter._validate_parameter(defence, int)
-        self._defence = defence
+        self.defence = defence
 
         AbstractCharacter._validate_parameter(attack_speed, int)
-        self._attack_speed = attack_speed
-    
-    def get_id(self):
-        """ Returns Character's id
-        
-        Returns:
-            string -- Character's initialized id
-        """
-        return self._id
+        self.attack_speed = attack_speed
 
-    def set_id(self, id):
-        """
-        
-        Arguments:
-            id {[string]} -- the new id
-        """
-        self._id = id
-
-    def set_username(self, username):
-        """
-        
-        Arguments:
-            username {[string]} -- the new username
-        """
-        self._username = username
-
-    def get_username(self):
-        """ Returns Character's username
-        
-        Returns:
-            string -- Character's initialized username
-        """
-        return self._username
-
-    def get_health(self):
-        """ Returns instance's current health
-        
-        Returns:
-            int -- Character's current health
-        """
-
-        return self._health
+        self.type = type
 
     def get_damage(self):
         """ Calculates damage based on 50% to 100% of Character's attack
@@ -76,7 +42,7 @@ class AbstractCharacter:
             int -- Damage Character deals when attacking
         """
         
-        damage = randint(int(self._attack * 0.5), self._attack)
+        damage = randint(int(self.attack * 0.5), self.attack)
         return damage
 
     def take_damage(self, damage):
@@ -87,18 +53,9 @@ class AbstractCharacter:
         """
         AbstractCharacter._validate_parameter(damage, int)
 
-        damage = damage - int(self._defence * 0.1)
-        self._health -= damage
-    
-    def get_attack_speed(self): 
-        """ Returns Character's attack speed
+        damage = damage - int(self.defence * 0.1)
+        self.health -= damage
         
-        Returns:
-            int -- Character's Attack Speed
-        """
-
-        return self._attack_speed
-    
     def get_die_roll(self):
         """ Returns an integer between 1,20 to simulate a d20 roll
         
@@ -107,26 +64,27 @@ class AbstractCharacter:
         """
 
         return randint(1,20)
-
-    def get_stats(self):
-        """ Returns a string of stats for the Character
-        
-        Raises:
-            NotImplementedError -- Raises error if not implemented by child class
-        """
-
-        raise NotImplementedError
-
-    def get_type(self):
-        """ Returns a string with the Character's type
-        
-        Raises:
-            NotImplementedError -- Raises error if not implemented by child class
-        """
-        raise NotImplementedError
         
     def to_dict(self):
-        raise NotImplementedError
+        """ Converts attributes to dict """
+        dict = {}
+        dict['username'] = self.username
+        dict['health'] = self.health
+        dict['attack'] = self.attack
+        dict['defence'] = self.defence
+        dict['attack_speed'] = self.attack_speed
+        dict['type'] = self.type
+
+        return dict
+
+    def copy(self, object):
+        """ Copies object to character """
+        if object.type == self.type:
+            self.username = object.username
+            self.health = object.health
+            self.attack = object.attack
+            self.defence = object.defence
+            self.attack_speed = object.attack_speed
 
     @staticmethod
     def _validate_parameter(arg, optional_type=None):
