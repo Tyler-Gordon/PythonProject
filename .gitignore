@@ -2,3 +2,11 @@
 *.zip
 *.pyc
 *.pyc
+.noseids
+.vscode/settings.json
+__pycache__/abstract_character.cpython-37.pyc
+__pycache__/ranger_character.cpython-37.pyc
+__pycache__/test_ranger_character.cpython-37.pyc
+__pycache__/test_thief_character.cpython-37.pyc
+__pycache__/thief_character.cpython-37.pyc
+*.pyc

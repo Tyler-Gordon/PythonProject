@@ -36,19 +36,21 @@ class MainAppController(tk.Frame):
             self._curr_page = TopNavbarView.PAGE1
 
     def _refresh_callback(self):
-        self._page1._list.delete(0,tk.END)
-        self._page2._list.delete(0,tk.END)
-        data = requests.get('http://127.0.0.1:5000/arena/characters/all').json()
-        self._current_characters = {}
-        for i in data:
-            self._current_characters[i[1]] = i[0]
-            index = i[1]
-            i = i[0]
-            if i['type'] == 'knight':
-                self._page1._list.insert(index,(i['username'],i['health'],i['attack'],i['defence'],i['attack_speed'],i['type'],i['sword_crit_chance'],i['sword_crit_modifier'],i['shield_defence_modifier']))
-            elif i['type'] =='mage':
-                self._page2._list.insert(index,(i['username'],i['health'],i['attack'],i['defence'],i['attack_speed'],i['type'],i['spell_power'],i['spell_chance']))
-
+        try:
+            self._page1._list.delete(0,tk.END)
+            self._page2._list.delete(0,tk.END)
+            data = requests.get('http://127.0.0.1:5000/arena/characters/all').json()
+            self._current_characters = {}
+            for i in data:
+                self._current_characters[i[1]] = i[0]
+                index = i[1]
+                i = i[0]
+                if i['type'] == 'knight':
+                    self._page1._list.insert(index,(i['username'],i['health'],i['attack'],i['defence'],i['attack_speed'],i['type'],i['sword_crit_chance'],i['sword_crit_modifier'],i['shield_defence_modifier']))
+                elif i['type'] =='mage':
+                    self._page2._list.insert(index,(i['username'],i['health'],i['attack'],i['defence'],i['attack_speed'],i['type'],i['spell_power'],i['spell_chance']))
+        except:
+            messagebox.showinfo('Error','Not connected to API!')
     def _delete_callback(self,selection):
         for chars in self._current_characters.items():
             if chars[1]['username'] == selection[0]:
