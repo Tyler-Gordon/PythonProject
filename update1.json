@@ -1,8 +1,0 @@
-{
-    "username": "Tyler",
-    "health": 1000, 
-    "attack": 20, 
-    "defence": 44, 
-    "attack_speed": 1, 
-    "type": "mage"
-}

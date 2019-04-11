@@ -1,3 +1,4 @@
+from sqlalchemy import Column, Integer, String
 from random import randint
 from abstract_character import AbstractCharacter
 
@@ -8,39 +9,18 @@ class MageCharacter(AbstractCharacter):
         AbstractCharacter {Class} -- Parent Class
     """
 
-    def __init__(self, username, health, attack, defence, attack_speed):
+    MAGE_CHARACTER_TYPE = "mage"
+
+    spell_power = Column(Integer)
+    spell_chance = Column(Integer)
+
+    def __init__(self, username, health, attack, defence, attack_speed, type, spell_power, spell_chance):
         """ Initializer for MageCharacter class
         """
 
-        super(MageCharacter, self).__init__(username, health, attack, defence, attack_speed)
-        self._spell_power = 30
-        self._spell_chance = (19,20)
-
-    def get_type(self):
-        """ Returns Character type
-        
-        Returns:
-            string -- Character's type
-        """
-
-        return "mage"
-    
-    def get_stats(self):
-        """ Returns stats for Mage
-        
-        Returns:
-            string -- Mage Character's stats
-        """
-
-        id = "Id: {}\n".format(self._id)
-        health = "Health: {}\n".format(self._health)
-        attack = "Attack: {}\n".format(self._attack)
-        defence = "Defence: {}\n".format(self._defence)
-        att_speed = "Attack Speed: {}\n".format(self._attack_speed)
-        spell_chance = 'Spell Chance: 10%'
-        spell_damage = 'Spell Damage: {}'.format(self.get_damage(20))
-        stats_string = id + health + attack + defence + att_speed + spell_chance + spell_damage
-        return stats_string
+        super(MageCharacter, self).__init__(username, health, attack, defence, attack_speed, type)
+        self.spell_power = spell_power
+        self.spell_chance = spell_chance
 
     def get_damage(self, die_roll=0):
         """ Returns spell damage if 19,20 is rolled. Otherwise
@@ -56,24 +36,21 @@ class MageCharacter(AbstractCharacter):
         
         if not die_roll:
             die_roll = self.get_die_roll()
-        if die_roll in self._spell_chance:
+        if die_roll in self.spell_chance:
             return self.spell()
         else:
             return super().get_damage()
 
     def spell(self):
-        return self._attack + self._spell_power
+        return self.attack + self.spell_power
 
     def to_dict(self):
-        data = {
-            'id': self._id,
-            'username': self._username,
-            'health': self._health,
-            'attack': self._attack,
-            'defence': self._defence,
-            'attack_speed': self._attack_speed,
-            'spell_change':  self._spell_chance,
-            'spell_power':  self._spell_power,
-            'type': self.get_type()
-        }
-        return data
+        dict = super().to_dict()
+        dict['spell_power'] = self.spell_power
+        dict['spell_chance'] = self.spell_chance
+        return dict
+
+    def copy(self, object):
+        super().copy(object)
+        self.spell_power = object.spell_power
+        self.spell_chance = object.spell_chance

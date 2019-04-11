@@ -6,27 +6,26 @@ from flask              import Flask, request
 import json
 
 app = Flask(__name__)
-arena = Arena('arena.json')
 
-def create_character_from_json(data, cls):
-    character = cls(data['username'], data['health'], data['attack'],
-                    data['defence'], data['attack_speed'])
-            
-    return character
+CHARACTERS_DB = 'characters.sqlite'
+
+arena = Arena(CHARACTERS_DB)
 
 @app.route('/arena/characters',methods=['POST'])
-def post_new_character():
+def add_character():
 
     content = request.get_json()
     print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     print(content)
 
     try:
+        
         if content['type'] == 'knight':
-            character = create_character_from_json(content, KnightCharacter)
-
+            character = KnightCharacter(content['username'], content['health'], content['attack'], content['defence'],
+            content['attack_speed'], content['type'], content['sword_crit_chance'], content['sword_crit_modifier'], content['shield_defence_modifier'])
         elif content['type'] == 'mage':
-            character = create_character_from_json(content, MageCharacter)
+            character = MageCharacter(content['username'], content['health'], content['attack'], content['defence'],
+            content['attack_speed'], content['type'], content['spell_power'], content['spell_chance'])
 
         char_id = arena.add_character(character)
         response = app.response_class(
@@ -42,104 +41,81 @@ def post_new_character():
 
     return response
 
-@app.route('/arena/characters/<char_id>',methods=['PUT'])
+@app.route('/arena/characters/<char_id>', methods=['PUT'])
 
-def put_character(char_id):
+def update_character(char_id):
+    content = request.get_json()
 
-    if char_id.isdigit():
-        char_id = int(char_id)
-        current_character = arena.get_character(char_id)
-
-        if current_character:
-            content = request.get_json()
-
-            try:
-                if content['type'].lower() == 'knight':
-                    character = create_character_from_json(content, KnightCharacter)
-
-                elif  content['type'].lower() == 'mage':
-                    character = create_character_from_json(content, MageCharacter)
-                
-                character.set_id(char_id)
-                arena.update(character)
-                response = app.response_class(
-                    response="OK",
-                    status=200
-                )
-
-            except ValueError:
-                response = app.response_class(
-                    response="INVALID DATA",
-                    status=400
-                ) 
-            
-        else:
-            response = app.response_class(
-                response="CHAR NOT FOUND",
-                status=404
-            )
-            
-    else:
+    try:
+        if content['type'] == 'knight':
+            character = KnightCharacter(content['username'], content['health'], content['attack'], content['defence'],
+            content['attack_speed'], content['type'], content['sword_crit_chance'], content['sword_crit_modifier'], content['shield_defence_modifier'])
+        elif content['type'] == 'mage':
+            character = MageCharacter(content['username'], content['health'], content['attack'], content['defence'],
+            content['attack_speed'], content['type'], content['spell_power'], content['spell_chance'])
+        
+        character.id = char_id
+        arena.update_character(character)
         response = app.response_class(
-            response="INVALID ID",
+            response="OK",
+            status=200
+        )
+
+    except ValueError:
+        response = app.response_class(
+            response="INVALID DATA",
             status=400
         )
 
     return response
 
 @app.route('/arena/characters/<char_id>',methods=['DELETE'])
-def del_character(char_id):
+def delete_character(char_id):
 
-    if char_id.isdigit():
-        char_id = int(char_id)
-        character = arena.get_character(char_id)
+    if int(char_id) > 0:
+        response = app.response_class(
+            response="BAD ID",
+            status=400
+        )
 
-        if character:
-            arena.delete(char_id)
+        try:
+            arena.delete_character(char_id)
             response = app.response_class(
                 response="OK",
                 status=200
             )
 
-        else:
+        except:
             response = app.response_class(
                 response="CHAR NOT FOUND",
                 status=404
             )
-
-    else:
-        response = app.response_class(
-            response="BAD ID",
-            status=400
-        )
         
     return response
 
 @app.route('/arena/characters/<char_id>',methods=['GET'])
 def get_character(char_id):
 
-    if char_id.isdigit():
-        char_id = int(char_id)
-        character = arena.get_character(char_id)
+    if int(char_id) > 0:
+        response = app.response_class(
+            response="BAD ID",
+            status=400
+        )
 
-        if character:
+        try:
+            character = arena.get_character(char_id)
+
             response = app.response_class(
                 response=json.dumps(character.to_dict()),
                 mimetype='application/json',
                 status=200
             )
 
-        else:
+        except:
             response = app.response_class(
                 response="CHAR NOT FOUND",
                 status=404
             )
-
-    else:
-        response = app.response_class(
-            response="BAD ID",
-            status=400
-        )
 
     return response
 
