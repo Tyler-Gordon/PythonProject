@@ -2,7 +2,7 @@ from sqlalchemy import Column, Integer, String
 from base import Base
 from random import randint
 
-class AbstractCharacter:
+class AbstractCharacter(Base):
     """ Character Declarative """
     
     __tablename__ = 'character'

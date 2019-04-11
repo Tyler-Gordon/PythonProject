@@ -70,7 +70,7 @@ def update_character(char_id):
 @app.route('/arena/characters/<char_id>',methods=['DELETE'])
 def delete_character(char_id):
 
-    if char_id > 0:
+    if int(char_id) > 0:
         response = app.response_class(
             response="BAD ID",
             status=400
@@ -94,7 +94,7 @@ def delete_character(char_id):
 @app.route('/arena/characters/<char_id>',methods=['GET'])
 def get_character(char_id):
 
-    if char_id > 0:
+    if int(char_id) > 0:
         response = app.response_class(
             response="BAD ID",
             status=400

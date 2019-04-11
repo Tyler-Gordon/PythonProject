@@ -66,7 +66,7 @@ class Arena:
         existing_character = session.query(KnightCharacter).filter(KnightCharacter.id == char_id).first()
         
         if existing_character:
-            if existing_character.get_type() != 'knight':
+            if existing_character.type != 'knight':
                 existing_character = session.query(MageCharacter).filter(MageCharacter.id == char_id).first()
                 
         session.close()
@@ -76,27 +76,26 @@ class Arena:
 
     def get_all(self):
         """Returns all characters"""
-
+        existing_characters = []
         session = self._db_session()
-        if session.query(KnightCharacter).all():
-            existing_characters = session.query(KnightCharacter).filter(KnightCharacter.type == 'knight').all()
-            existing_characters.append(session.query(MageCharacter).filter(MageCharacter.type == 'mage').all())
-        else:
-            existing_students = []
+        
+        existing_characters.extend(session.query(KnightCharacter).filter(KnightCharacter.type == 'knight').all())
+        existing_characters.extend(session.query(MageCharacter).filter(MageCharacter.type == 'mage').all())
+
         session.close()
 
-        return existing_students
+        return existing_characters
 
     def get_all_by_type(self, char_type):
         """Returns all characters based type"""
         session = self._db_session()
+        existing_characters = []
 
-        if char_type == 'mage':
-            char_type = MageCharacter
-        elif char_type == 'knight':
-            char_type = KnightCharacter
+        if char_type == 'knight':
+            existing_characters.extend(session.query(KnightCharacter).filter(KnightCharacter.type == 'knight').all())
+        elif char_type == 'mage':
+            existing_characters.extend(session.query(MageCharacter).filter(MageCharacter.type == 'mage').all())
 
-        existing_characters = session.query(char_type).all()
         session.close()
 
         return existing_characters
