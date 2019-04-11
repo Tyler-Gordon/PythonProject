@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox as tkMessageBox
 import json
-
+import requests
 class PopupView(tk.Frame):
     """ Popup Window """
 
@@ -15,8 +15,11 @@ class PopupView(tk.Frame):
         self._attack = attack
         self._defence = defence
         self._attackspeed = attackspeed
-        self._type = chartype
-
+        self._type = 0
+        if chartype == 'knight':
+            self._type = 1
+        elif chartype == 'mage':
+            self._type = 2
         self._create_widgets()
 
     def _create_widgets(self):
@@ -38,24 +41,23 @@ class PopupView(tk.Frame):
             tk.Radiobutton(self,
                         text="Knight",
                         variable=self.typeInt,
+                        state=tk.DISABLED,
                         value=1).grid(row=6, column=1)
 
             tk.Radiobutton(self,
                         text="Mage",
                         variable=self.typeInt,
-                        value=2).grid(row=6, column=2)
+                        state=tk.DISABLED,
+                        value=2).grid(row=6, column=2)          
         else:
             tk.Radiobutton(self,
                         text="Knight",
                         variable=self.typeInt,
-                        state=tk.DISABLED,
                         value=1).grid(row=6, column=1)
-
             tk.Radiobutton(self,
                         text="Mage",
                         variable=self.typeInt,
-                        state=tk.DISABLED,
-                        value=2).grid(row=6, column=2)            
+                        value=2).grid(row=6, column=2)  
 
         SubmitBtn = tk.Button(self,text='Submit',command=self.submit)
 
@@ -80,9 +82,22 @@ class PopupView(tk.Frame):
         AttackSpeedLabel.grid(row=5,column=1)
 
         SubmitBtn.grid(row=7,column=1)
-        print('Created all widgets')
         self.pack()
 
     def submit(self):
-
+        chartype = ''
         print(self.typeInt.get())
+        if self.typeInt.get() == 1:
+            chartype = 'knight'
+        elif self.typeInt.get() == 2:
+            chartype = 'mage'
+        print(chartype)
+        character = {
+            "username": self.UsernameEntry.get(),
+            "health": int(self.HealthEntry.get()), 
+            "attack": int(self.AttackEntry.get()), 
+            "defence": int(self.DefenceEntry.get()), 
+            "attack_speed": int(self.AttackSpeedEntry.get()), 
+            "type": chartype
+        }
+        requests.post('http://127.0.0.1:5000/arena/characters',json=character)

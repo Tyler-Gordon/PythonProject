@@ -18,12 +18,14 @@ def create_character_from_json(data, cls):
 def post_new_character():
 
     content = request.get_json()
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print(content)
 
     try:
-        if content['type'].lower() == 'knight':
+        if content['type'] == 'knight':
             character = create_character_from_json(content, KnightCharacter)
 
-        elif content['type'].lower() == 'mage':
+        elif content['type'] == 'mage':
             character = create_character_from_json(content, MageCharacter)
 
         char_id = arena.add_character(character)

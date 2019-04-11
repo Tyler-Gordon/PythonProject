@@ -1,6 +1,6 @@
 import tkinter as tk
-
-
+from tkinter import messagebox
+from popup_view import PopupView
 class Page2View(tk.Frame):
     """ Page 2 """
 
@@ -27,11 +27,24 @@ class Page2View(tk.Frame):
 
     def _delete_callback(self):
         selection = self._list.get(self._list.curselection())
-        pass
+        if messagebox.askyesno('Verify', 'Really delete?'):
+            # this is where delete api is
+            pass
+
     def _update_callback(self):
         selection = self._list.get(self._list.curselection())
-        pass
-    def _create_callback(self):
-        pass
+        username=selection[0]
+        health = selection[1]
+        attack = selection[2]
+        defence = selection[3]
+        attackspeed = selection[4]
+        type=selection[5]
+        # get selection stuff from api call and pass into popup
+        popup_win = tk.Toplevel()
+        popup = PopupView(popup_win,username,health,attack,defence,attackspeed,type,True)
 
+    def _create_callback(self):
+        popup_win = tk.Toplevel()
+        popup = PopupView(popup_win)
+        #popup.tkraise(self._parent)
 

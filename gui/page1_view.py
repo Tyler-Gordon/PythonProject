@@ -36,9 +36,15 @@ class Page1View(tk.Frame):
 
     def _update_callback(self):
         selection = self._list.get(self._list.curselection())
+        username=selection[0]
+        health = selection[1]
+        attack = selection[2]
+        defence = selection[3]
+        attackspeed = selection[4]
+        type=selection[5]
         # get selection stuff from api call and pass into popup
         popup_win = tk.Toplevel()
-        popup = PopupView(popup_win,)
+        popup = PopupView(popup_win,username,health,attack,defence,attackspeed,type,True)
 
     def _create_callback(self):
         popup_win = tk.Toplevel()

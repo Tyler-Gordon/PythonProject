@@ -36,10 +36,15 @@ class MainAppController(tk.Frame):
             self._curr_page = TopNavbarView.PAGE1
 
     def _refresh_callback(self):
-        data = requests.get('http://localhost:5000/arena/characters/all').json()
-        print(data)
+        self._page1._list.delete(0,tk.END)
+        self._page2._list.delete(0,tk.END)
+        data = requests.get('http://127.0.0.1:5000/arena/characters/all').json()
         for i in data:
-            self._page1._list.insert(data.index(i),data)
+            if i['type'] == 'knight':
+                self._page1._list.insert(data.index(i),(i['username'],i['health'],i['attack'],i['defence'],i['attack_speed'],i['type']))
+            elif i['type'] =='mage':
+                self._page2._list.insert(data.index(i),(i['username'],i['health'],i['attack'],i['defence'],i['attack_speed'],i['type']))
+
 
 if __name__ == "__main__":
     root = tk.Tk()
