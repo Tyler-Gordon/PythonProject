@@ -11,9 +11,9 @@ class KnightCharacter(AbstractCharacter):
 
     KNIGHT_CHARACTER_TYPE = "knight"
 
-    sword_crit_chance = Column(Integer(100)),
-    sword_crit_modifier = Column(Integer(10)),
-    shield_defence_modifier = Column(Integer(10))
+    sword_crit_chance = Column(Integer),
+    sword_crit_modifier = Column(Integer),
+    shield_defence_modifier = Column(Integer)
 
     def __init__(self, username, health, attack, defence, attack_speed, type, sword_crit_chance,
                 sword_crit_modifier, shield_defence_modifier):

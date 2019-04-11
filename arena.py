@@ -27,12 +27,11 @@ class Arena:
         if not character or not isinstance(character, char_class):
             raise ValueError("Invalid Character Object")
 
-        char_id = randint(1,10000)
-
         session = self._db_session()
         session.add(character)
         session.commit()
 
+        char_id = character.id
         session.close()
         return char_id
 
@@ -49,7 +48,7 @@ class Arena:
         session.commit()
         session.close()
     
-    def delete(self,char_id):
+    def delete_character(self,char_id):
         """Removes a character """
         session = self._db_session()
         existing_character = self.get_character(char_id)

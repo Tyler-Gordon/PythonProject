@@ -9,10 +9,10 @@ class AbstractCharacter:
 
     id = Column(Integer, primary_key=True)
     username = Column(String(250), nullable=False)
-    health = Column(Integer(250), nullable=False)
-    attack = Column(Integer(250), nullable=False)
-    defence = Column(Integer(250), nullable=False)
-    attack_speed = Column(Integer(250), nullable=False)
+    health = Column(Integer, nullable=False)
+    attack = Column(Integer, nullable=False)
+    defence = Column(Integer, nullable=False)
+    attack_speed = Column(Integer, nullable=False)
     type = Column(String(10), nullable=False)
 
     def __init__(self, username, health, attack, defence, attack_speed, type):

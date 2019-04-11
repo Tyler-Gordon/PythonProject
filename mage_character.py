@@ -11,8 +11,8 @@ class MageCharacter(AbstractCharacter):
 
     MAGE_CHARACTER_TYPE = "mage"
 
-    spell_power = Column(Integer(100)),
-    sword_chance = Column(Integer(10))
+    spell_power = Column(Integer),
+    sword_chance = Column(Integer)
 
     def __init__(self, username, health, attack, defence, attack_speed, type, spell_power, spell_chance):
         """ Initializer for MageCharacter class
