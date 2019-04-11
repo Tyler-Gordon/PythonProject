@@ -79,11 +79,13 @@ class Arena:
         existing_characters = []
         session = self._db_session()
         
-        existing_characters.extend(session.query(KnightCharacter).filter(KnightCharacter.type == 'knight').all())
-        existing_characters.extend(session.query(MageCharacter).filter(MageCharacter.type == 'mage').all())
+        existing_characters.extend(session.query(KnightCharacter,KnightCharacter.id).filter(KnightCharacter.type == 'knight').all())
+        existing_characters.extend(session.query(MageCharacter,MageCharacter.id).filter(MageCharacter.type == 'mage').all())
+        #print(existing_characters)
+        # session.query(AbstractCharacter.id).distinct():
 
+        
         session.close()
-
         return existing_characters
 
     def get_all_by_type(self, char_type):

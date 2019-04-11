@@ -17,4 +17,10 @@ class BottomNavbarView(tk.Frame):
                                 text='REFRESH',
                                 fg='green',
                                 command=self._refresh_callback)
-        self._refresh_button.grid(row=2,column=2)
+        self._quit_button = tk.Button(self,
+                                text='QUIT',
+                                fg='red',
+                                command=self.quit)
+
+        self._refresh_button.grid(row=2,column=1)
+        self._quit_button.grid(row=2,column=2)

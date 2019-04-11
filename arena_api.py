@@ -15,8 +15,6 @@ arena = Arena(CHARACTERS_DB)
 def add_character():
 
     content = request.get_json()
-    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print(content)
 
     try:
         
@@ -42,10 +40,8 @@ def add_character():
     return response
 
 @app.route('/arena/characters/<char_id>', methods=['PUT'])
-
 def update_character(char_id):
     content = request.get_json()
-
     try:
         if content['type'] == 'knight':
             character = KnightCharacter(content['username'], content['health'], content['attack'], content['defence'],
@@ -121,9 +117,12 @@ def get_character(char_id):
 
 @app.route('/arena/characters/all',methods=['GET'])
 def get_all_characters():
-
-    characters = [character.to_dict() for character in arena.get_all()]
-
+    characters = []
+    #characters = [character.to_dict() for character in arena.get_all()[0]]
+    for character,id in arena.get_all():
+        list_entry = [character.to_dict(), id]
+        characters.append(list_entry)
+    
     response = app.response_class(
         response=json.dumps(characters),
         mimetype='application/json',
