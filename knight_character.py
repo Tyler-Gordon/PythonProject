@@ -37,20 +37,10 @@ class KnightCharacter(AbstractCharacter):
 
         if not die_roll:
             die_roll = self.get_die_roll()
-        if die_roll in self.sword_crit_chance:
+        if die_roll == self.sword_crit_chance:
             return self.sword_swing()
         else:
             return super().get_damage()
-
-    def take_damage(self, damage):
-        """ Applies damage to Knight after being reduced by its shield modifier
-        
-        Arguments:
-            damage {int} -- Damage dealt to Knight
-        """
-
-        damage = damage - int(self.defence * self.shield_defence_modifier)
-        self.health -= damage
 
     def sword_swing(self):
         return self.attack + int(self.attack * self.sword_crit_modifier)

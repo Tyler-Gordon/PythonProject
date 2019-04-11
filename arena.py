@@ -23,7 +23,7 @@ class Arena:
     def add_character(self, character):
         """Adds a character """
 
-        char_class = Arena._check_type(character)
+        char_class = self._check_type(character)
         if not character or not isinstance(character, char_class):
             raise ValueError("Invalid Character Object")
 
@@ -40,9 +40,10 @@ class Arena:
         char_class = Arena._check_type(character)
         if not character or not isinstance(character, char_class):
             raise ValueError("Invalid Character Object")
-
         session = self._db_session()
+        
         existing_character = session.query(char_class).filter(char_class.id == character.id).first()
+        print(character.id, char_class,existing_character)
         existing_character.copy(character)
 
         session.commit()
